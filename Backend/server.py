@@ -26,7 +26,12 @@ def questions():
 @app.route('/api/feedback', methods=['POST'])
 def feedback():
     data = request.get_json()
-    return jsonify({"received": data}), 200
+    resumeText = data["resume"]
+    jobPostingText = data["job-posting"]
+    questions = data["questions"]
+    answers = data["question-answers"]
+
+    return jsonify({"received questions": questions, "received answers": answers, "received resume": resumeText, "received posting": jobPostingText}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
