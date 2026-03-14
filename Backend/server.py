@@ -16,5 +16,17 @@ def questions():
 
     return jsonify({"received resume": resumeText, "received job posting": jobPostingText}), 200
 
+# Method to use to request feedback to be generated
+# Takes in:
+# User Resume
+# User Job Posting
+# Provided questions
+# User answers to each question
+# Then, it queries the LLM and asks it to generate feedback for these questions based on the user info
+@app.route('/api/feedback', methods=['POST'])
+def feedback():
+    data = request.get_json()
+    return jsonify({"received": data}), 200
+
 if __name__ == '__main__':
     app.run(debug=True)
