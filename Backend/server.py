@@ -11,7 +11,10 @@ app = Flask(__name__)
 @app.route('/api/questions', methods=['POST'])
 def questions():
     data = request.get_json()
-    return jsonify({"received": data}), 200
+    resumeText = data["resume"]
+    jobPostingText = data["job-posting"]
+
+    return jsonify({"received resume": resumeText, "received job posting": jobPostingText}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
