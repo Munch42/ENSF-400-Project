@@ -22,8 +22,11 @@ limiter = Limiter(
 @limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
 def questions():
     data = request.get_json()
-    resumeText = data["resume"]
-    jobPostingText = data["job-posting"]
+    if "resume" in data and "job-posting" in data:
+        resumeText = data["resume"]
+        jobPostingText = data["job-posting"]
+    else: 
+        return jsonify({"Error": "Invalid data received"}), 400
 
     return jsonify({"received resume": resumeText, "received job posting": jobPostingText}), 200
 
@@ -38,10 +41,14 @@ def questions():
 @limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
 def feedback():
     data = request.get_json()
-    resumeText = data["resume"]
-    jobPostingText = data["job-posting"]
-    questions = data["questions"]
-    answers = data["question-answers"]
+
+    if "resume" in data and "job-posting" in data and "questions" in data and "question-answers" in data:
+        resumeText = data["resume"]
+        jobPostingText = data["job-posting"]
+        questions = data["questions"]
+        answers = data["question-answers"]
+    else: 
+        return jsonify({"Error": "Invalid data received"}), 400
 
     return jsonify({"received questions": questions, "received answers": answers, "received resume": resumeText, "received posting": jobPostingText}), 200
 
