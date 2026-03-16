@@ -1,0 +1,27 @@
+.header {
+    background-color: #f0f0f0;
+    color: #2c2c2c;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
+.navLink {
+    color: #2c2c2c;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: opacity 0.2s;
+}
+
+.navLink:hover {
+    opacity: 0.5;
+    text-decoration: underline;
+}
