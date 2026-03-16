@@ -1,6 +1,8 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
+/*  DEFAULT REACT APP BUILD
 function App() {
   return (
     <div className="App">
@@ -19,6 +21,21 @@ function App() {
         </a>
       </header>
     </div>
+  );
+}
+*/
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/upload" element={<UploadPage />} />
+        <Route path="/interview" element={<InterviewPage />} />
+        <Route path="/exportFeedback" element={<ExportPage />} />
+        <Route path="/contactUs" element={<ContactPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
