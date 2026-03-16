@@ -6,7 +6,7 @@ const NavigationRibbon = () => {
     return (
         <header className={styles.header} >
             <div>
-                <h1 style={{fontSize: '24px'}}>Resume Wizard</h1>
+                <h1 className={styles.title}>Resume Wizard</h1>
             </div>
             <nav className={styles.nav} >
                 <Link to='/' className={styles.navLink} >Home</Link>
