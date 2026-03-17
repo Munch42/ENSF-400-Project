@@ -1,4 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LandingPage from './components/LandingPage';
+import UploadPage from './components/UploadPage';
+import InterviewPage from './components/InterviewPage';
+import ExportPage from './components/ExportPage';
+import ContactPage from './components/ContactPage';
 import './App.css';
 
 function App() {

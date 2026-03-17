@@ -1,0 +1,32 @@
+.header {
+    background-color: #f0f0f0;
+    color: #363636;
+    padding: 10px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title {
+    margin: 0;
+    font-size: 28px;
+}
+
+.nav {
+    display: flex;
+    gap: 25px;
+}
+
+.navLink {
+    color: #363636;
+    text-decoration: none;
+    font-size: 18px;
+    padding: 10px 0;
+    transition: opacity 0.2s;
+}
+
+.navLink:hover {
+    opacity: 0.5;
+    text-decoration: underline;
+}
