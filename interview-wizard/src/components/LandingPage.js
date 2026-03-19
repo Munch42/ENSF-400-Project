@@ -47,7 +47,29 @@ const LandingPage = () => {
                         </div>
                     </div>
                 </section>
-                <h1>TODO: Complete Landing Page</h1>
+                <section className={styles.subSection}>
+                    <p className={styles.sectionTitle}>Testimonials</p>
+                    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly', gap:'20px'}}>
+                        <div className={styles.testimonialBox}>
+                            <p className={styles.testimonialContent}>
+                                "Resume Wizard helped me land an amazing internship this upcoming year."
+                            </p>
+                            <p className={styles.testimonialName}>Aidan J.</p>
+                        </div>
+                        <div className={styles.testimonialBox}>
+                            <p className={styles.testimonialContent}>
+                                "I never thought AI could be this useful. The AI suggestions really helped me to forumlate my responses for my interview."
+                            </p>
+                            <p className={styles.testimonialName}>Tiffany P.</p>
+                        </div>
+                        <div className={styles.testimonialBox}>
+                            <p className={styles.testimonialContent}>
+                                "Extremely helpful for practicing the STAR format Highly recommend to students and new grads looking for jobs."
+                            </p>
+                            <p style={{fontWeight:'600'}}>Ayden D.</p>
+                        </div>
+                    </div>
+                </section>
             </main>
         </div>
     );
