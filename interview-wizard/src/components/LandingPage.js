@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavigationRibbon from './NavigationRibbon';
+import Footer from './Footer';
 import styles from './LandingPage.module.css';
 
 const LandingPage = () => {
@@ -71,6 +72,7 @@ const LandingPage = () => {
                     </div>
                 </section>
             </main>
+            <Footer />
         </div>
     );
 };
