@@ -12,9 +12,10 @@ const LandingPage = () => {
                 <section className={styles.startSection}>
                     <p style={{
                         fontSize:'30px',
+                        fontWeight:'600',
                         marginTop:'0px',
                         paddingBottom:'0px',
-                        textAlign:'center'}}>
+                        textAlign:'center',}}>
                         Get Interviewed by the Best AIs
                     </p>
                     <p style={{
@@ -28,6 +29,23 @@ const LandingPage = () => {
                     <button type="button" onClick={() => navigate('/upload')} className={styles.startButton}>
                         Get Started Now
                     </button>
+                </section>
+                <section className={styles.subSection}>
+                    <p className={styles.sectionTitle}>How It Works</p>
+                    <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly', gap:'20px'}}>
+                        <div className={styles.stepBox}>
+                            <p className={styles.stepTitle}>1. Upload Your Resume</p>
+                            <p>Provide the job description and your up to date resume.</p>
+                        </div>
+                        <div className={styles.stepBox}>
+                            <p className={styles.stepTitle}>2. Let AI Do the Work</p>
+                            <p>Our AI analyzes the job description and resume, and asks you interview questions related to the job.</p>
+                        </div>
+                        <div className={styles.stepBox}>
+                            <p className={styles.stepTitle}>3. Review & Apply</p>
+                            <p>Once you answer the questions, our AI will analyze your responses and give you feedback to ace your next interview.</p>
+                        </div>
+                    </div>
                 </section>
                 <h1>TODO: Complete Landing Page</h1>
             </main>
