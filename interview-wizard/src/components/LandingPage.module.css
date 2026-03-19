@@ -1,0 +1,23 @@
+.startSection {
+    background-color: #dffffe;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 10px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.startButton {
+    color:white; 
+    background-color: #008074;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+}
+
+.startButton:hover {
+    opacity: 0.8;
+}
