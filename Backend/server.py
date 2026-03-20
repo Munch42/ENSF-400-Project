@@ -20,9 +20,11 @@ limiter = Limiter(
 #   - job-posting - the text of the job posting to target questions towards
 # Queries the LLM to generate questions based on these documents, and returns content-type application/json containing the key:
 #   - questions - a list of the text for each generated question
-# In case of exceptions, returns an error code and application/json containing the key "Error" with an error message:
+# In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
 #   - 400 - if invalid data (data not containing a resume and job-description) received
 #   - 400 - if file mimetype is not application/pdf
+#   - 400 - if invalid pdf is submitted
+#   - 500 - if the LLM cannot be accessed or doesn't generate a list of questions
 @app.route('/api/questions', methods=['POST'])
 @limiter.limit("5 per minute") # Rate limiting to ensure that the limit API calls are conserved
 def questions():
@@ -38,10 +40,13 @@ def questions():
         return jsonify({"Error": "Invalid file type"}), 400
 
     # Extract complete resume text using pymupdf
-    resume_text = ""
-    with pymupdf.open(stream=resume.stream.read()) as document:
-        for page in document:
-            resume_text += str(page.get_text(sort=True))
+    try:
+        resume_text = ""
+        with pymupdf.open(stream=resume.stream.read()) as document:
+            for page in document:
+                resume_text += str(page.get_text(sort=True))
+    except Exception as e:
+        return jsonify({"Error": "Unable to parse pdf"}), 400
 
     # Generate questions using the LLM
     try:   
