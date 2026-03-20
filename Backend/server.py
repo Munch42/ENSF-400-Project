@@ -20,6 +20,7 @@ limiter = Limiter(
 #   - job-posting - the text of the job posting to target questions towards
 # Queries the LLM to generate questions based on these documents, and returns content-type application/json containing the key:
 #   - questions - a list of the text for each generated question
+#   - resume-text - the text extracted from the resume, so that it does not need to be regenerated for feedback
 # In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
 #   - 400 - if invalid data (data not containing a resume and job-description) received
 #   - 400 - if file mimetype is not application/pdf
@@ -55,7 +56,7 @@ def questions():
         return jsonify({"Error": "Unable to access LLM, try again later"}), 500
     
     # Respond with the generated questions
-    return jsonify({"questions": questions}), 200
+    return jsonify({"questions": questions, "resume-text": resume_text}), 200
 
 # Method to use to request feedback to be generated
 # Takes in:
