@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 import pymupdf
+from llm_calls import generate_questions
 
 app = Flask(__name__)
 
@@ -41,8 +42,12 @@ def questions():
     with pymupdf.open(stream=resume.stream.read()) as document:
         for page in document:
             resume_text += str(page.get_text(sort=True))
+
+    # Generate questions using the LLM
+    questions = generate_questions(resume_text, job_description)
     
-    return jsonify({"received resume": resume_text, "received job posting": job_description}), 200
+    # Respond with the generated questions
+    return jsonify({"questions": questions}), 200
 
 # Method to use to request feedback to be generated
 # Takes in:
