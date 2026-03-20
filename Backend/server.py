@@ -12,23 +12,25 @@ limiter = Limiter(
     storage_uri="memory://", # This is fine for our non-production storage
 )
 
-# Method to use to request questions to be generated
-# Takes in:
-# User Resume
-# User Job Posting
-# Then query the LLM and ask it to generate questions
-# Return the questions in the specified format for the front end
+# Route to generate interview questions
+# Expects a POST request containing form-data with:
+#   - resume - a pdf document containing the user's resume
+#   - job-posting - the text of the job posting to target questions towards
+# Queries the LLM to generate questions based on these documents, and returns content-type application/json containing the key:
+#   - questions - a list of the text for each generated question
+# Exceptions:
+#   - 400 - if invalid data (data not containing a resume and job-description) received
 @app.route('/api/questions', methods=['POST'])
-@limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
+@limiter.limit("5 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
 def questions():
-    data = request.get_json()
-    if "resume" in data and "job-posting" in data:
-        resumeText = data["resume"]
-        jobPostingText = data["job-posting"]
+    # Check if the request contains a resume and job-description and load them if present, otherwise return an error
+    if "resume" in request.files and "job-description" in request.form:
+        resume = request.files["resume"]
+        job_description = request.form["job-description"]
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
 
-    return jsonify({"received resume": resumeText, "received job posting": jobPostingText}), 200
+    return jsonify({"received resume": resume.name, "received job posting": job_description}), 200
 
 # Method to use to request feedback to be generated
 # Takes in:
