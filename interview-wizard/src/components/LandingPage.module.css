@@ -17,10 +17,12 @@
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
+    text-decoration: None;
 }
 
 .startButton:hover {
     opacity: 0.8;
+    text-decoration: underline;
 }
 
 .sectionTitle {

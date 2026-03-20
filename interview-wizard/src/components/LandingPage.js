@@ -1,11 +1,10 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import NavigationRibbon from './NavigationRibbon';
 import Footer from './Footer';
 import styles from './LandingPage.module.css';
 
 const LandingPage = () => {
-    const navigate = useNavigate();
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <NavigationRibbon />
@@ -27,9 +26,7 @@ const LandingPage = () => {
                         paddingRight:'50px'}}>
                         Leverage artificial intelligence to prepare for your most difficult interview in seconds!
                     </p>
-                    <button type="button" onClick={() => navigate('/upload')} className={styles.startButton}>
-                        Get Started Now
-                    </button>
+                    <Link to='/upload' className={styles.startButton}>Get Started Now</Link>
                 </section>
                 <section className={styles.subSection}>
                     <p className={styles.sectionTitle}>How It Works</p>
