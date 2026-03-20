@@ -18,7 +18,7 @@ limiter = Limiter(
 #   - job-posting - the text of the job posting to target questions towards
 # Queries the LLM to generate questions based on these documents, and returns content-type application/json containing the key:
 #   - questions - a list of the text for each generated question
-# Exceptions:
+# In case of exceptions, returns an error code and application/json containing the key "Error" with an error message:
 #   - 400 - if invalid data (data not containing a resume and job-description) received
 @app.route('/api/questions', methods=['POST'])
 @limiter.limit("5 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
@@ -29,7 +29,10 @@ def questions():
         job_description = request.form["job-description"]
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
-
+    
+    if resume.content_type != "application/pdf":
+        return jsonify({"Error": "Invalid file type"}), 400
+    
     return jsonify({"received resume": resume.name, "received job posting": job_description}), 200
 
 # Method to use to request feedback to be generated
