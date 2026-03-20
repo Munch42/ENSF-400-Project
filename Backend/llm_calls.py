@@ -30,13 +30,18 @@ def llm_call_structured_output(prompt: str, schema: type[S]):
     return schema.model_validate_json(response)
 
 def generate_questions(resume_text: str, job_posting_text: str):
-    prompt = f"""As a skilled professional, you are providing your friend with a practice interview. Act like an interviewer, at the company that posted the given job description. Generate a 10 interview questions, focusing on the alignment of their resume with the job description. 
-    ---
-    Job Description:
+    prompt = f"""Job Description:
     {job_posting_text}
     ---
     Resume:
     {resume_text}
+    ---
+    As a skilled professional, you are interviewing a candidate based on the job description. Craft 10 interview questions, ensuring an **even** split between:
+    - Common questions, based on the discipline and resources you have seen online
+    - Generic soft-skills questions
+    - How their skills would allow them to excel at the position
+    - How their job or project experience aligns with the position
+    Create a realistic interview, considering the profession and seniority of the job. **Not** all questions should specifically mention the resume, include some generic, high-level questions. Begin with introductions and end with what they hope to get out of the position.
     """
     questions_list = llm_call_structured_output(prompt, QuestionsList)
     return questions_list.questions
