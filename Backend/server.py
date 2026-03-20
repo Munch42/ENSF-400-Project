@@ -22,7 +22,8 @@ limiter = Limiter(
 #   - questions - a list of the text for each generated question
 #   - resume-text - the text extracted from the resume, so that it does not need to be regenerated for feedback
 # In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
-#   - 400 - if invalid data (data not containing a resume and job-description) received
+#   - 400 - if invalid data (data not containing a resume and job-description) 
+#   - 400 - if resume file is empty
 #   - 400 - if file mimetype is not application/pdf
 #   - 400 - if invalid pdf is submitted
 #   - 500 - if the LLM cannot be accessed or doesn't generate a list of questions
@@ -36,6 +37,10 @@ def questions():
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
     
+    # Filename will be empty if the user did not select a file
+    if resume.filename == "":
+        return jsonify({"Error": "No resume selected"}), 400
+
     # Ensure the uploaded document is a pdf
     if resume.content_type != "application/pdf":
         return jsonify({"Error": "Invalid file type"}), 400
