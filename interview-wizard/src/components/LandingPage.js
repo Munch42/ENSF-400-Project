@@ -50,7 +50,7 @@ const LandingPage = () => {
                     <div style={{display:'flex', flexDirection:'row', justifyContent:'space-evenly', gap:'20px'}}>
                         <div className={styles.testimonialBox}>
                             <p className={styles.testimonialContent}>
-                                "Resume Wizard helped me land an amazing internship this upcoming year."
+                                "Resume Wizard helped me land my dream internship for the upcoming year."
                             </p>
                             <p className={styles.testimonialName}>Aidan J.</p>
                         </div>
@@ -62,7 +62,7 @@ const LandingPage = () => {
                         </div>
                         <div className={styles.testimonialBox}>
                             <p className={styles.testimonialContent}>
-                                "Extremely helpful for practicing the STAR format Highly recommend to students and new grads looking for jobs."
+                                "Helpful for practicing the STAR format Highly recommend to students and new grads looking for jobs."
                             </p>
                             <p style={{fontWeight:'600'}}>Ayden D.</p>
                         </div>
