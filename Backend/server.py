@@ -24,7 +24,7 @@ limiter = Limiter(
 #   - 400 - if invalid data (data not containing a resume and job-description) received
 #   - 400 - if file mimetype is not application/pdf
 @app.route('/api/questions', methods=['POST'])
-@limiter.limit("5 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
+@limiter.limit("5 per minute") # Rate limiting to ensure that the limit API calls are conserved
 def questions():
     # Check if the request contains a resume and job-description and load them if present, otherwise return an error
     if "resume" in request.files and "job-description" in request.form:
@@ -44,7 +44,10 @@ def questions():
             resume_text += str(page.get_text(sort=True))
 
     # Generate questions using the LLM
-    questions = generate_questions(resume_text, job_description)
+    try:   
+        questions = generate_questions(resume_text, job_description)
+    except Exception as e:
+        return jsonify({"Error": "Unable to access LLM, try again later"}), 500
     
     # Respond with the generated questions
     return jsonify({"questions": questions}), 200
