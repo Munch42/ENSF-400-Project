@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 
-export default function JobDescriptionUpload() {
+const JobDescriptionUpload = (jobDescriptionText) => {
     const [description, setDescription] = useState('');
 
     const handleUpload = () => {
-        description.trim()
-        console.log('Uploading:', description);
-        // TODO: Add upload logic here (e.g., send description to backend)
+        console.log('Uploading job description:', description);
+        jobDescriptionText.onValueChange(description);
     };
 
     return (
@@ -21,4 +20,6 @@ export default function JobDescriptionUpload() {
             <button onClick={handleUpload}>Upload</button>
         </div>
     );
-}
+};
+
+export default JobDescriptionUpload;

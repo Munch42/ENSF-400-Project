@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # This will enable CORS for all origins and all routes
 
 # This will return code 429 if the user is rate limited. The frontend can use this to display a clearer message if needed
 limiter = Limiter(
@@ -19,7 +21,8 @@ limiter = Limiter(
 # Then query the LLM and ask it to generate questions
 # Return the questions in the specified format for the front end
 @app.route('/api/questions', methods=['POST'])
-@limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
+# @limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
+@limiter.exempt
 def questions():
     data = request.get_json()
     if "resume" in data and "job-posting" in data:
@@ -27,6 +30,8 @@ def questions():
         jobPostingText = data["job-posting"]
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
+    
+    print(resumeText)
 
     return jsonify({"received resume": resumeText, "received job posting": jobPostingText}), 200
 

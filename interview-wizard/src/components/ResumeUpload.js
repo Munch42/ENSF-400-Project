@@ -1,21 +1,19 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import pdfToText from 'react-pdftotext';
 
-const ResumeUpload = () => {
+const ResumeUpload = (resumeText) => {
     const [extractedText, setExtractedText] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const handleFileUpload = async (event) => {
+    const handleFileParsing = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
         setLoading(true);
         setSuccess(false);
         try {
-            // TODO: Add upload logic here (e.g., send file to backend)
-            pdfToText(file).then((text) => {
+            await pdfToText(file).then((text) => {
                 setExtractedText(text);
             });
             setSuccess(true);
@@ -26,28 +24,33 @@ const ResumeUpload = () => {
             setLoading(false);
         }
     };
+    
+    const handleUpload = () => {
+        console.log('Uploading resume:', extractedText);
+        resumeText.onValueChange(extractedText);
+    };
 
-    // TODO: Remove textarea
     return (
         <div>
-            <div>
-                <input
-                    type="file"
-                    accept=".pdf"
-                    onChange={handleFileUpload}
-                    disabled={loading}
-                />
-                <p>{success ? 'File uploaded successfully!' : null}</p>
-                <textarea
-                    value={extractedText}
-                    readOnly
-                    rows="10"
-                    cols="50"
-                    placeholder="Extracted text will appear here"
-                />
-            </div>
+            <input
+                type="file"
+                accept=".pdf"
+                onChange={handleFileParsing}
+                disabled={loading}
+            />
+            <p>{success ? 'File parsed successfully!' : null}</p>
+            <h3 disabled={success}>Review your resume:</h3>
+            <textarea
+                value={extractedText}
+                readOnly
+                rows="10"
+                cols="50"
+                placeholder="Extracted text will appear here"
+            />
+            <button onClick={handleUpload}>Upload</button>
         </div>
     );
+
 };
 
 export default ResumeUpload;
