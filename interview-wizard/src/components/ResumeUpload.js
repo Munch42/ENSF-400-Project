@@ -39,7 +39,7 @@ const ResumeUpload = (resumeText) => {
                 disabled={loading}
             />
             <p>{success ? 'File parsed successfully!' : null}</p>
-            <h3 disabled={success}>Review your resume:</h3>
+            <h3>Resume preview:</h3>
             <textarea
                 value={extractedText}
                 readOnly

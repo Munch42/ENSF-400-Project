@@ -6,7 +6,7 @@ import JobDescriptionUpload from './JobDescriptionUpload';
 const UploadPage = () => {
     const [resumeText, setResumeText] = useState("Sample resume text.");
     const [jobDescriptionText, setJobDescriptionText] = useState("Sample job description text.");
-    const [test, setTest] = useState("Test");
+    const [error, setError] = useState("");
 
     const updateResumeText = (newValue) => {
         setResumeText(newValue);
@@ -34,11 +34,12 @@ const UploadPage = () => {
             const data = await response.json();
 
             if (!response.ok) {
+                setError(data.Error);
                 throw new Error(data.Error || "Request failed");
             }
 
             console.log("Success:", data);
-            setTest(data.resume) // TODO: remove
+            setError("");
             return data;
         } catch (error) {
             console.error("Error:", error);
@@ -48,18 +49,15 @@ const UploadPage = () => {
     return (
         <div>
             <NavigationRibbon />
-            <h1>TODO: Complete Upload Page</h1>
             <h2>Resume Upload</h2>
             <ResumeUpload onValueChange={updateResumeText} />
             <h2>Job Description Upload</h2>
             <JobDescriptionUpload onValueChange={updateJobDescriptionText} />
-            <p>{resumeText}</p>
-            <p>{jobDescriptionText}</p>
             <button onClick={() =>
                 sendQuestionRequest(resumeText, jobDescriptionText)}>
                 Generate Questions
             </button>
-            <p>{test}</p>
+            <p style={{ color: "red" }}>{error}</p>
         </div>
     );
 };
