@@ -14,6 +14,7 @@ const ResumeUpload = () => {
         setLoading(true);
         setSuccess(false);
         try {
+            // TODO: Add upload logic here (e.g., send file to backend)
             pdfToText(file).then((text) => {
                 setExtractedText(text);
             });
@@ -26,10 +27,9 @@ const ResumeUpload = () => {
         }
     };
 
-    // TODO: Remove textarea and send text to backend
+    // TODO: Remove textarea
     return (
         <div>
-            <h1>TODO: Complete Resume Upload Component</h1>
             <div>
                 <input
                     type="file"
