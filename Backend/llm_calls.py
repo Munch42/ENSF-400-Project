@@ -46,6 +46,23 @@ def generate_questions(resume_text: str, job_posting_text: str):
     questions_list = llm_call_structured_output(prompt, QuestionsList)
     return questions_list.questions
 
+def generate_feedback(resume_text: str, job_posting_text: str, questions: list[str], answers: list[str]):
+    interview_text = "\n---\n".join("Question:\n{question}\n\nAnswer:\n{answer}" for question, answer in zip(questions, answers))
+
+    prompt = f"""Job Description:
+    {job_posting_text}
+    ---
+    Resume:
+    {resume_text}
+    ---
+    Interview:
+    {interview_text}
+    --- 
+    As a skilled professional, you provided your friend with a practice interview for the given job description. Please constructive feedback on what they could do to improve. Consider which experiences they could highlight better based on their resume and job description and how they could improve their delivery.
+    """
+
+    return llm_call(prompt)
+
 
 # Test llm call with structured output
 if __name__ == "__main__":
