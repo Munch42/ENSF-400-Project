@@ -58,7 +58,7 @@ Resume:
 Interview:
 {interview_text}
 --- 
-As a skilled professional, you provided your friend with a practice interview for the given job description. Please constructive feedback on what they could do to improve. Consider which experiences they could highlight better based on their resume and job description and how they could improve their delivery.
+As a skilled professional, you provided me with a practice interview for the given job description. Please craft constructive feedback on what I could do to improve. Consider which experiences I could highlight better based on their resume and job description and how I could improve my delivery.
 """
 
     return llm_call(prompt)
