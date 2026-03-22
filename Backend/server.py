@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-import pymupdf
 from llm_calls import generate_questions
 
 app = Flask(__name__)
@@ -15,53 +14,39 @@ limiter = Limiter(
 )
 
 # Route to generate interview questions
-# Expects a POST request containing form-data with:
-#   - resume - a pdf document containing the user's resume
+# Expects a POST request containing JSON with the keys:
+#   - resume - the text contents of a resume to ask question about
 #   - job-posting - the text of the job posting to target questions towards
 # Queries the LLM to generate questions based on these documents, and returns content-type application/json containing the key:
-#   - questions - a list of the text for each generated question
-#   - resume-text - the text extracted from the resume, so that it does not need to be regenerated for feedback
+#   - questions - a list of (plaintext) questions
 # In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
-#   - 400 - if invalid data (data not containing a resume and job-description) 
-#   - 400 - if resume file is empty
-#   - 400 - if file mimetype is not application/pdf
-#   - 400 - if invalid pdf is submitted
+#   - 415 - if request mimetype is not JSON
+#   - 400 - if invalid data (data not containing a resume and job-description)
 #   - 500 - if the LLM cannot be accessed or doesn't generate a list of questions
 @app.route('/api/questions', methods=['POST'])
 @limiter.limit("5 per minute") # Rate limiting to ensure that the limit API calls are conserved
 def questions():
-    # Check if the request contains a resume and job-description and load them if present, otherwise return an error
-    if "resume" in request.files and "job-description" in request.form:
-        resume = request.files["resume"]
-        job_description = request.form["job-description"]
+    # Attempt to load the JSON
+    try:
+        data = request.get_json()
+    except:
+        return jsonify({"Error": "Unsupported media type"}), 415
+
+    # Check if the request contains a resume and job description and load them if present, otherwise return an error
+    if "resume" in data and "job-posting" in data:
+        resume_text = data["resume"]
+        job_description = data["job-posting"]
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
-    
-    # Filename will be empty if the user did not select a file
-    if resume.filename == "":
-        return jsonify({"Error": "No resume selected"}), 400
-
-    # Ensure the uploaded document is a pdf
-    if resume.content_type != "application/pdf":
-        return jsonify({"Error": "Invalid file type"}), 400
-
-    # Extract complete resume text using pymupdf
-    try:
-        resume_text = ""
-        with pymupdf.open(stream=resume.stream.read()) as document:
-            for page in document:
-                resume_text += str(page.get_text(sort=True))
-    except Exception as e:
-        return jsonify({"Error": "Unable to parse pdf"}), 400
 
     # Generate questions using the LLM
     try:   
         questions = generate_questions(resume_text, job_description)
-    except Exception as e:
+    except:
         return jsonify({"Error": "Unable to access LLM, try again later"}), 500
     
     # Respond with the generated questions
-    return jsonify({"questions": questions, "resume-text": resume_text}), 200
+    return jsonify({"questions": questions}), 200
 
 # Method to use to request feedback to be generated
 # Takes in:

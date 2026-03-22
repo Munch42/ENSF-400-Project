@@ -3,4 +3,3 @@ flask-limiter
 python-dotenv
 litellm
 pydantic
-PyMuPDF
