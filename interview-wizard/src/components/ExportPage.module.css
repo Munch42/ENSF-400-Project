@@ -1,0 +1,125 @@
+.page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.headerRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: 600;
+    color: #008074;
+    margin: 0;
+}
+
+.subtitle {
+    color: #555;
+    margin-top: 4px;
+    margin-bottom: 24px;
+    font-size: 14px;
+}
+
+.exportButton {
+    background-color: #008074;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.exportButton:hover:not(:disabled) {
+    opacity: 0.8;
+}
+
+.exportButton:disabled {
+    background-color: lightgray;
+    cursor: not-allowed;
+}
+
+.emptyState {
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    padding: 40px;
+    text-align: center;
+    color: #888;
+    background-color: #fafafa;
+}
+
+.feedbackList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.feedbackCard {
+    border: 2px solid lightgray;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #fafafa;
+}
+
+.questionLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: #008074;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.questionText {
+    font-size: 15px;
+    font-weight: 600;
+    color: #363636;
+    margin: 0 0 14px 0;
+}
+
+.answerLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.answerText {
+    font-size: 14px;
+    color: #444;
+    margin: 0 0 10px 0;
+    line-height: 1.5;
+}
+
+.feedbackLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin: 0 0 4px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.feedbackText {
+    font-size: 14px;
+    color: #444;
+    margin: 0;
+    line-height: 1.5;
+    font-style: italic;
+}
