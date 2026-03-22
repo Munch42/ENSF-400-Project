@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NavigationRibbon from './NavigationRibbon';
 import ResumeUpload from './ResumeUpload';
 import JobDescriptionUpload from './JobDescriptionUpload';
+import Footer from './Footer';
 
 const UploadPage = () => {
     const [resumeText, setResumeText] = useState("Sample resume text.");
@@ -47,7 +48,7 @@ const UploadPage = () => {
     };
 
     return (
-        <div>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <NavigationRibbon />
             <h2>Resume Upload</h2>
             <ResumeUpload onValueChange={updateResumeText} />
@@ -58,6 +59,8 @@ const UploadPage = () => {
                 Generate Questions
             </button>
             <p style={{ color: "red" }}>{error}</p>
+            <h1>TODO: Complete Upload Page</h1>
+            <Footer />
         </div>
     );
 };
