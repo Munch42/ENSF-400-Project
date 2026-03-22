@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import pdfToText from 'react-pdftotext';
-import Dropzone, { useDropzone } from 'react-dropzone'
+import { useDropzone } from 'react-dropzone'
 
 const ResumeUpload = (resumeText) => {
     const [extractedText, setExtractedText] = useState('');
@@ -17,14 +17,10 @@ const ResumeUpload = (resumeText) => {
             'application/pdf': [".pdf"],
         },
         maxFiles: 1,
-        onDrop: files => handleFileParsing(files.at(0))
+        onDrop: files => handleUpload(files.at(0))
     });
 
-    const parseByInput = async (event) => {
-        handleFileParsing(event.target.files[0]);
-    }
-
-    const handleFileParsing = async (file) => {
+    const handleUpload = async (file) => {
         if (!file) return;
         console.log(file);
 
@@ -32,6 +28,8 @@ const ResumeUpload = (resumeText) => {
         setSuccess(false);
         try {
             await pdfToText(file).then((text) => {
+                console.log('Uploading resume:', text);
+                resumeText.onValueChange(text);
                 setExtractedText(text);
             });
             setSuccess(true);
@@ -43,11 +41,6 @@ const ResumeUpload = (resumeText) => {
         }
     };
 
-    const handleUpload = () => {
-        console.log('Uploading resume:', extractedText);
-        resumeText.onValueChange(extractedText);
-    };
-
     return (
         <div>
             <div {...getRootProps({ className: 'dropzone' })}>
@@ -57,7 +50,7 @@ const ResumeUpload = (resumeText) => {
             <input
                 type="file"
                 accept=".pdf"
-                onChange={parseByInput}
+                onChange={(e) => handleUpload(e.target.files[0])}
                 disabled={loading}
             />
             <p>Supported formats: PDF</p>
@@ -70,7 +63,6 @@ const ResumeUpload = (resumeText) => {
                 cols="50"
                 placeholder="Extracted text will appear here"
             />
-            <button onClick={handleUpload}>Upload</button>
         </div>
     );
 
