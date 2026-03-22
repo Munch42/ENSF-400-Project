@@ -48,13 +48,16 @@ def questions():
     # Respond with the generated questions
     return jsonify({"questions": questions}), 200
 
-# Method to use to request feedback to be generated
-# Takes in:
-# User Resume
-# User Job Posting
-# Provided questions
-# User answers to each question
-# Then, it queries the LLM and asks it to generate feedback for these questions based on the user info
+# Route to generate feedback on a mock interview session
+# Expects a POST request containing JSON with the keys:
+#   - resume - the text contents of the applicant's resume
+#   - job-posting - the position the (mock) interview is being conducted for
+#   - questions - the questions asked by the interviewer
+#   - question-answers - the responses of the applicant
+# Queries the LLM to generate constructive feedback on the applicant's responses, and returns JSON containing the key:
+#   - feedback - feedback on the applicants responses
+# In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
+#   - 400 - if invalid JSON (not containing the required keys) is received
 @app.route('/api/feedback', methods=['POST'])
 @limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
 def feedback():
