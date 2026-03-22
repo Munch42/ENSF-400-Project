@@ -57,12 +57,19 @@ def questions():
 # Queries the LLM to generate constructive feedback on the applicant's responses, and returns JSON containing the key:
 #   - feedback - feedback on the applicants responses
 # In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
+#   - 415 - if request mimetype is not JSON
 #   - 400 - if invalid JSON (not containing the required keys) is received
+#   - 500 - if the LLM cannot be accessed or doesn't generate a list of questions
 @app.route('/api/feedback', methods=['POST'])
 @limiter.limit("5 per minute") # Rate limiting to ensure that the limit API calls are conserved
 def feedback():
-    data = request.get_json()
+    # Attempt to load the JSON
+    try:
+        data = request.get_json()
+    except:
+        return jsonify({"Error": "Unsupported media type"}), 415
 
+    # Load the necessary data if it is present in the request, otherwise return an error message
     if "resume" in data and "job-posting" in data and "questions" in data and "question-answers" in data:
         resume_text = data["resume"]
         job_description = data["job-posting"]
@@ -71,8 +78,13 @@ def feedback():
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
     
-    feedback = generate_feedback(resume_text, job_description, questions, answers)
+    # Generate feedback using the LLM
+    try:
+        feedback = generate_feedback(resume_text, job_description, questions, answers)
+    except:
+        return jsonify({"Error": "Unable to access LLM, try again later"}), 500
 
+    # Respond with the generated feedback
     return jsonify({"feedback": feedback}), 200
 
 if __name__ == '__main__':
