@@ -1,9 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
+from flask_cors import CORS
 from llm_calls import generate_questions, generate_feedback
 
 app = Flask(__name__)
+CORS(app)
 
 # This will return code 429 if the user is rate limited. The frontend can use this to display a clearer message if needed
 limiter = Limiter(
