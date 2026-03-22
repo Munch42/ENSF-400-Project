@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
-from llm_calls import generate_questions
+from llm_calls import generate_questions, generate_feedback
 
 app = Flask(__name__)
 
@@ -59,19 +59,21 @@ def questions():
 # In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
 #   - 400 - if invalid JSON (not containing the required keys) is received
 @app.route('/api/feedback', methods=['POST'])
-@limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
+@limiter.limit("5 per minute") # Rate limiting to ensure that the limit API calls are conserved
 def feedback():
     data = request.get_json()
 
     if "resume" in data and "job-posting" in data and "questions" in data and "question-answers" in data:
-        resumeText = data["resume"]
-        jobPostingText = data["job-posting"]
+        resume_text = data["resume"]
+        job_description = data["job-posting"]
         questions = data["questions"]
         answers = data["question-answers"]
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
+    
+    feedback = generate_feedback(resume_text, job_description, questions, answers)
 
-    return jsonify({"received questions": questions, "received answers": answers, "received resume": resumeText, "received posting": jobPostingText}), 200
+    return jsonify({"feedback": feedback}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
