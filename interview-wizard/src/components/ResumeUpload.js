@@ -1,14 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import pdfToText from 'react-pdftotext';
+import Dropzone, { useDropzone } from 'react-dropzone'
 
 const ResumeUpload = (resumeText) => {
     const [extractedText, setExtractedText] = useState('');
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
 
-    const handleFileParsing = async (event) => {
-        const file = event.target.files[0];
+    const {
+        acceptedFiles,
+        fileRejections,
+        getRootProps,
+        getInputProps
+    } = useDropzone({
+        accept: {
+            'application/pdf': [".pdf"],
+        },
+        maxFiles: 1,
+        onDrop: files => handleFileParsing(files.at(0))
+    });
+
+    const parseByInput = async (event) => {
+        handleFileParsing(event.target.files[0]);
+    }
+
+    const handleFileParsing = async (file) => {
         if (!file) return;
+        console.log(file);
 
         setLoading(true);
         setSuccess(false);
@@ -24,7 +42,7 @@ const ResumeUpload = (resumeText) => {
             setLoading(false);
         }
     };
-    
+
     const handleUpload = () => {
         console.log('Uploading resume:', extractedText);
         resumeText.onValueChange(extractedText);
@@ -32,12 +50,17 @@ const ResumeUpload = (resumeText) => {
 
     return (
         <div>
+            <div {...getRootProps({ className: 'dropzone' })}>
+                <input {...getInputProps()} />
+                <p>Drag and drop your resume here</p>
+            </div>
             <input
                 type="file"
                 accept=".pdf"
-                onChange={handleFileParsing}
+                onChange={parseByInput}
                 disabled={loading}
             />
+            <p>Supported formats: PDF</p>
             <p>{success ? 'File parsed successfully!' : null}</p>
             <h3>Resume preview:</h3>
             <textarea
