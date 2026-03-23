@@ -7,7 +7,6 @@ import uploadCloud from '../upload-cloud-icon.png'
 const ResumeUpload = (resumeText) => {
     const [extractedText, setExtractedText] = useState('');
     const [loading, setLoading] = useState(false);
-    const [success, setSuccess] = useState(false);
 
     const {
         acceptedFiles,
@@ -27,14 +26,12 @@ const ResumeUpload = (resumeText) => {
         console.log(file);
 
         setLoading(true);
-        setSuccess(false);
         try {
             await pdfToText(file).then((text) => {
                 console.log('Uploading resume:', text);
                 resumeText.onValueChange(text);
                 setExtractedText(text);
             });
-            setSuccess(true);
         } catch (error) {
             console.error('Error extracting PDF text:', error);
             setExtractedText('Error extracting text from PDF');
@@ -80,7 +77,6 @@ const ResumeUpload = (resumeText) => {
                 }}>
                     Supported formats: PDF
                 </p>
-                {success ? <p>File parsed successfully!</p> : null}
                 <h3 style={{
                     marginTop: '0px',
                 }}>
@@ -90,9 +86,9 @@ const ResumeUpload = (resumeText) => {
                     style={{margin: "0 50px"}}
                     value={extractedText}
                     readOnly
-                    rows="2"
+                    rows="5"
                     cols="50"
-                    placeholder="Extracted text will appear here"
+                    placeholder="Your resume will appear here"
                 />
             </main>
         </div>
