@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 const JobDescriptionUpload = (jobDescriptionText) => {
-    const [description, setDescription] = useState('');
 
-    const handleUpload = () => {
+    const handleUpload = (description) => {
         console.log('Uploading job description:', description);
         jobDescriptionText.onValueChange(description);
     };
@@ -11,13 +10,11 @@ const JobDescriptionUpload = (jobDescriptionText) => {
     return (
         <div>
             <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Paste job description here..."
-                rows="10"
+                onChange={(e) => handleUpload(e.target.value)}
+                placeholder="Copy and paste a job description here..."
+                rows="5"
                 cols="50"
             />
-            <button onClick={handleUpload}>Upload</button>
         </div>
     );
 };
