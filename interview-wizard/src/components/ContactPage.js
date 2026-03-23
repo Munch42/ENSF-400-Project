@@ -8,7 +8,6 @@ const ContactPage = () => {
     return (
         <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <NavigationRibbon />
-            <h1>TODO: Complete Contact Page</h1>
             <main>
                 <div className={styles.contactSection} >
                     <p style={{
