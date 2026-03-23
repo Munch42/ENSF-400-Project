@@ -11,7 +11,6 @@ const NavigationRibbon = () => {
             <nav className={styles.nav} >
                 <Link to='/' className={styles.navLink} >Home</Link>
                 <Link to='/contactUs' className={styles.navLink} >Contact Us</Link>
-                <Link to='/upload' className={styles.navLink} >DEBUG: Upload Resume</Link>
             </nav>
         </header>
     );
