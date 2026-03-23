@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import pdfToText from 'react-pdftotext';
 import { useDropzone } from 'react-dropzone'
+import styles from './ResumeUpload.module.css'
+import uploadCloud from '../upload-cloud-icon.png'
 
 const ResumeUpload = (resumeText) => {
     const [extractedText, setExtractedText] = useState('');
@@ -43,26 +45,56 @@ const ResumeUpload = (resumeText) => {
 
     return (
         <div>
-            <div {...getRootProps({ className: 'dropzone' })}>
-                <input {...getInputProps()} />
-                <p>Drag and drop your resume here</p>
-            </div>
-            <input
-                type="file"
-                accept=".pdf"
-                onChange={(e) => handleUpload(e.target.files[0])}
-                disabled={loading}
-            />
-            <p>Supported formats: PDF</p>
-            <p>{success ? 'File parsed successfully!' : null}</p>
-            <h3>Resume preview:</h3>
-            <textarea
-                value={extractedText}
-                readOnly
-                rows="10"
-                cols="50"
-                placeholder="Extracted text will appear here"
-            />
+            <main className={styles.resumeMain}>
+                <div
+                    {...getRootProps({ className: 'dropzone' })}>
+                    <section className={styles.dropzone}>
+                        <img
+                            className={styles.uploadImg}
+                            src={uploadCloud}
+                            alt="uploadCloud"
+                        />
+                        <input {...getInputProps()} />
+                        <p >Drag and drop your resume here</p>
+                    </section>
+                </div>
+                <div style={{ marginTop: '30px' }}>
+                    <input
+                        className={styles.fileInputHidden}
+                        id="file-upload"
+                        type="file"
+                        accept=".pdf"
+                        onChange={(e) => handleUpload(e.target.files[0])}
+                        disabled={loading}
+                    />
+                    <label
+                        htmlFor="file-upload"
+                        className={styles.fileInputButton}>
+                        Browse Files
+                    </label>
+                </div>
+                <p style={{
+                    marginTop: '30px',
+                    marginBottom: '10px',
+                    color: 'gray'
+                }}>
+                    Supported formats: PDF
+                </p>
+                {success ? <p>'File parsed successfully!'</p> : null}
+                <h3 style={{
+                    marginTop: '0px',
+                }}>
+                    Resume preview:
+                </h3>
+                <textarea
+                    style={{margin: "0 50px"}}
+                    value={extractedText}
+                    readOnly
+                    rows="10"
+                    cols="50"
+                    placeholder="Extracted text will appear here"
+                />
+            </main>
         </div>
     );
 

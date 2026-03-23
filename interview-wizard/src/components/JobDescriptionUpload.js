@@ -11,8 +11,8 @@ const JobDescriptionUpload = (jobDescriptionText) => {
         <div>
             <textarea
                 onChange={(e) => handleUpload(e.target.value)}
-                placeholder="Paste job description here..."
-                rows="10"
+                placeholder="Copy and paste a job description here..."
+                rows="2"
                 cols="50"
             />
         </div>

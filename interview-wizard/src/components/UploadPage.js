@@ -48,21 +48,26 @@ const UploadPage = () => {
     };
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column'}}>
             <NavigationRibbon />
-            <main>
-                <section className={styles.startSection}>
+            <main style={{display: 'flex', justifyContent: 'center'}}>
+                <section className={styles.uploadSection}>
                     <h2>Upload Your Resume</h2>
                     <p>Let the AI Interview you</p>
                     <ResumeUpload onValueChange={updateResumeText} />
                     <h2>Upload Job Description</h2>
                     <JobDescriptionUpload onValueChange={updateJobDescriptionText} />
                     {resumeText.length > 0 && jobDescriptionText.length > 0
-                        ? <button onClick={() =>
-                            sendQuestionRequest(resumeText, jobDescriptionText)}>
+                        ? <button
+                            className={styles.submitButton}
+                            onClick={() => sendQuestionRequest(resumeText, jobDescriptionText)}>
                             Interview Me!
                         </button>
-                        : <button disabled>Upload to Continue</button>
+                        : <button
+                            className={styles.submitButton}
+                            disabled>
+                            Upload to Continue
+                        </button>
                     }
                     <p style={{ color: "red" }}>{error}</p>
                 </section>

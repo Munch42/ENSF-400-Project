@@ -1,0 +1,44 @@
+.resumeMain {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px dashed black;
+    border-radius: 10px;
+    max-width: 300px;
+    max-height: 100px;
+    padding: 10px 20px
+}
+
+.uploadImg {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.fileInputButton {
+    color: white;
+    background-color: #008074;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 5px;
+    text-decoration: None;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.fileInputButton:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
+.fileInputHidden {
+    opacity: 0;
+    width: 0.1px;
+    height: 0.1px;
+    position: absolute;
+}
