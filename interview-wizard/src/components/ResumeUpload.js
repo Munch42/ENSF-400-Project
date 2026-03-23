@@ -80,7 +80,7 @@ const ResumeUpload = (resumeText) => {
                 }}>
                     Supported formats: PDF
                 </p>
-                {success ? <p>'File parsed successfully!'</p> : null}
+                {success ? <p>File parsed successfully!</p> : null}
                 <h3 style={{
                     marginTop: '0px',
                 }}>
@@ -90,7 +90,7 @@ const ResumeUpload = (resumeText) => {
                     style={{margin: "0 50px"}}
                     value={extractedText}
                     readOnly
-                    rows="10"
+                    rows="2"
                     cols="50"
                     placeholder="Extracted text will appear here"
                 />
