@@ -21,7 +21,7 @@ const UploadPage = () => {
         setJobDescriptionText(newValue)
     };
 
-    // TODO: Update route and pass data to interview page
+    // TODO: Update route
     const sendQuestionRequest = async (resumeText, jobPostingText) => {
         try {
             const response = await fetch("http://localhost:5000/api/questions", {
@@ -44,6 +44,12 @@ const UploadPage = () => {
 
             console.log("Success:", data);
             setError("");
+
+            localStorage.setItem('interviewQuestions', JSON.stringify(data.questions));
+            localStorage.setItem('resumeText', resumeText);
+            localStorage.setItem('jobPostingText', jobPostingText);
+            localStorage.removeItem('interviewSession');
+
             navigate('/interview')
             return data;
         } catch (error) {
