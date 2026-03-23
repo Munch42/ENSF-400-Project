@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import NavigationRibbon from './NavigationRibbon';
 import ResumeUpload from './ResumeUpload';
 import JobDescriptionUpload from './JobDescriptionUpload';
@@ -10,6 +11,8 @@ const UploadPage = () => {
     const [jobDescriptionText, setJobDescriptionText] = useState("");
     const [error, setError] = useState("");
 
+    const navigate = useNavigate();
+
     const updateResumeText = (newValue) => {
         setResumeText(newValue);
     };
@@ -18,7 +21,7 @@ const UploadPage = () => {
         setJobDescriptionText(newValue)
     };
 
-    // TODO: Update route
+    // TODO: Update route and pass data to interview page
     const sendQuestionRequest = async (resumeText, jobPostingText) => {
         try {
             const response = await fetch("http://localhost:5000/api/questions", {
@@ -41,6 +44,7 @@ const UploadPage = () => {
 
             console.log("Success:", data);
             setError("");
+            navigate('/interview')
             return data;
         } catch (error) {
             console.error("Error:", error);
