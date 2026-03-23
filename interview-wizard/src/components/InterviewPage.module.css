@@ -1,0 +1,122 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main {
+    flex: 1;
+    margin: 40px 100px;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #008074;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.chatContainer {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 20px;
+    min-height: 380px;
+    max-height: 480px;
+    overflow-y: auto;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.aiMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 70%;
+}
+
+.userMessage {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: 70%;
+    align-self: flex-end;
+}
+
+.messageLabel {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.aiBubble {
+    background-color: #dffffe;
+    border: 1px solid #b2e8e4;
+    border-radius: 5px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.userBubble {
+    background-color: #008074;
+    color: white;
+    border-radius: 5px;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.inputRow {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.textInput {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.textInput:focus {
+    outline: none;
+    border-color: #008074;
+}
+
+.textInput:disabled {
+    background-color: #f5f5f5;
+    color: #aaa;
+}
+
+.submitButton {
+    background-color: #008074;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    height: fit-content;
+}
+
+.submitButton:hover:not(:disabled) {
+    opacity: 0.8;
+}
+
+.submitButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
