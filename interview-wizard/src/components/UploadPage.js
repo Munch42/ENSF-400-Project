@@ -10,6 +10,7 @@ const UploadPage = () => {
     const [resumeText, setResumeText] = useState("");
     const [jobDescriptionText, setJobDescriptionText] = useState("");
     const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
 
@@ -23,6 +24,7 @@ const UploadPage = () => {
 
     // TODO: Update route
     const sendQuestionRequest = async (resumeText, jobPostingText) => {
+        setLoading(true);
         try {
             const response = await fetch("http://localhost:5000/api/questions", {
                 method: "POST",
@@ -54,6 +56,8 @@ const UploadPage = () => {
             return data;
         } catch (error) {
             console.error("Error:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -70,8 +74,9 @@ const UploadPage = () => {
                     {resumeText.length > 0 && jobDescriptionText.length > 0
                         ? <button
                             className={styles.submitButton}
-                            onClick={() => sendQuestionRequest(resumeText, jobDescriptionText)}>
-                            Interview Me!
+                            onClick={() => sendQuestionRequest(resumeText, jobDescriptionText)}
+                            disabled={loading}>
+                            {loading ? "Loading..." : "Interview Me!"}
                         </button>
                         : <button
                             className={styles.submitButton}
