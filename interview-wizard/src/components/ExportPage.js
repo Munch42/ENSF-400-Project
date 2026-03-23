@@ -49,6 +49,76 @@ const ExportPage = () => {
         fetchFeedback();
     }, []);
 
+    const handleExportPDF = async () => {
+        const { jsPDF } = await import('jspdf');
+        const doc = new jsPDF({ unit: 'pt', format: 'letter' });
+
+        const margin = 50;
+        const pageWidth = doc.internal.pageSize.getWidth();
+        const maxWidth = pageWidth - margin * 2;
+        let y = margin;
+
+        const checkPageBreak = (needed = 20) => {
+            if (y + needed > doc.internal.pageSize.getHeight() - margin) {
+                doc.addPage();
+                y = margin;
+            }
+        };
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(20);
+        doc.setTextColor(0, 128, 116);
+        doc.text('Interview Feedback Report', margin, y);
+        y += 30;
+
+        doc.setFontSize(11);
+        doc.setTextColor(100, 100, 100);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`Generated: ${new Date().toLocaleDateString()}`, margin, y);
+        y += 30;
+
+        doc.setDrawColor(180, 180, 180);
+        doc.line(margin, y, pageWidth - margin, y);
+        y += 20;
+
+        session.forEach((item, index) => {
+            checkPageBreak(80);
+
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(12);
+            doc.setTextColor(0, 128, 116);
+            const qLines = doc.splitTextToSize(`Q${index + 1}: ${item.question}`, maxWidth);
+            doc.text(qLines, margin, y);
+            y += qLines.length * 16 + 6;
+
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(11);
+            doc.setTextColor(60, 60, 60);
+            const aLines = doc.splitTextToSize(`Answer: ${item.answer}`, maxWidth);
+            checkPageBreak(aLines.length * 15 + 20);
+            doc.text(aLines, margin, y);
+            y += aLines.length * 15;
+
+            if (item.feedback) {
+                y += 6;
+                doc.setFont('helvetica', 'italic');
+                doc.setTextColor(80, 80, 80);
+                const fLines = doc.splitTextToSize(`Feedback: ${item.feedback}`, maxWidth);
+                checkPageBreak(fLines.length * 15 + 20);
+                doc.text(fLines, margin, y);
+                y += fLines.length * 15;
+            }
+
+            y += 20;
+            checkPageBreak(2);
+            doc.setDrawColor(220, 220, 220);
+            doc.line(margin, y, pageWidth - margin, y);
+            y += 20;
+        });
+
+        doc.save('interview-feedback.pdf');
+    };
+
     return (
         <div className={styles.page}>
             <NavigationRibbon />
@@ -57,7 +127,7 @@ const ExportPage = () => {
                     <p className={styles.title}>Interview Feedback</p>
                     <button
                         className={styles.exportButton}
-                        //onClick={handleExportPDF}
+                        onClick={handleExportPDF}
                         disabled={feedbackStatus !== 'ready' || session.length === 0}
                     >
                         ⬇ Download PDF
