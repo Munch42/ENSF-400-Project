@@ -2,7 +2,7 @@ from flask import Flask, jsonify, request
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from flask_cors import CORS
-from llm_calls import generate_questions
+from llm_calls import generate_questions, generate_feedback
 
 app = Flask(__name__)
 CORS(app)
@@ -50,27 +50,44 @@ def questions():
     # Respond with the generated questions
     return jsonify({"questions": questions}), 200
 
-# Method to use to request feedback to be generated
-# Takes in:
-# User Resume
-# User Job Posting
-# Provided questions
-# User answers to each question
-# Then, it queries the LLM and asks it to generate feedback for these questions based on the user info
+# Route to generate feedback on a mock interview session
+# Expects a POST request containing JSON with the keys:
+#   - resume - the text contents of the applicant's resume
+#   - job-posting - the position the (mock) interview is being conducted for
+#   - questions - the questions asked by the interviewer
+#   - question-answers - the responses of the applicant
+# Queries the LLM to generate constructive feedback on the applicant's responses, and returns JSON containing the key:
+#   - feedback - feedback on the applicants responses
+# In case of failure, returns an error code and application/json containing the key "Error" and an error message. In particular:
+#   - 415 - if request mimetype is not JSON
+#   - 400 - if invalid JSON (not containing the required keys) is received
+#   - 500 - if the LLM cannot be accessed or doesn't generate a list of questions
 @app.route('/api/feedback', methods=['POST'])
-@limiter.limit("1 per minute") # Limit the LLM routes to once a minute to ensure that the limit API calls are conserved
+@limiter.limit("5 per minute") # Rate limiting to ensure that the limit API calls are conserved
 def feedback():
-    data = request.get_json()
+    # Attempt to load the JSON
+    try:
+        data = request.get_json()
+    except:
+        return jsonify({"Error": "Unsupported media type"}), 415
 
+    # Load the necessary data if it is present in the request, otherwise return an error message
     if "resume" in data and "job-posting" in data and "questions" in data and "question-answers" in data:
-        resumeText = data["resume"]
-        jobPostingText = data["job-posting"]
+        resume_text = data["resume"]
+        job_description = data["job-posting"]
         questions = data["questions"]
         answers = data["question-answers"]
     else: 
         return jsonify({"Error": "Invalid data received"}), 400
+    
+    # Generate feedback using the LLM
+    try:
+        feedback = generate_feedback(resume_text, job_description, questions, answers)
+    except:
+        return jsonify({"Error": "Unable to access LLM, try again later"}), 500
 
-    return jsonify({"received questions": questions, "received answers": answers, "received resume": resumeText, "received posting": jobPostingText}), 200
+    # Respond with the generated feedback
+    return jsonify({"feedback": feedback}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
