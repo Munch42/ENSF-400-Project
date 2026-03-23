@@ -8,7 +8,7 @@ import './App.css';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/ENSF-400-Project">
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/upload" element={<UploadPage />} />
