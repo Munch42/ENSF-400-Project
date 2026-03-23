@@ -46,6 +46,10 @@ Create a realistic interview, considering the profession and seniority of the jo
     questions_list = llm_call_structured_output(prompt, QuestionsList)
     return questions_list.questions
 
+class FeedbackList(BaseModel):
+    """A list of feedback items, one per interview question"""
+    feedback: list[str]
+
 def generate_feedback(resume_text: str, job_posting_text: str, questions: list[str], answers: list[str]):
     interview_text = "\n---\n".join(f"Question:\n{question}\n\nAnswer:\n{answer}" for question, answer in zip(questions, answers))
 
@@ -58,10 +62,11 @@ Resume:
 Interview:
 {interview_text}
 --- 
-As a skilled professional, you provided me with a practice interview for the given job description. Please craft constructive feedback on what I could do to improve. Consider which experiences I could highlight better based on their resume and job description and how I could improve my delivery.
+As a skilled professional, you provided me with a practice interview for the given job description. Please craft constructive feedback on what I could do to improve for each question. Consider which experiences I could highlight better based on their resume and job description and how I could improve my delivery. Return one feedback item per question in the same order as the questions.
 """
 
-    return llm_call(prompt)
+    feedback_list = llm_call_structured_output(prompt, FeedbackList)
+    return feedback_list.feedback
 
 
 # Test llm call with structured output
