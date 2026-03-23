@@ -1,6 +1,7 @@
 {
   "name": "interview-wizard",
   "version": "0.1.0",
+  "homepage": "https://Munch42.github.io/ENSF-400-Project",
   "private": true,
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -10,6 +11,7 @@
     "@testing-library/user-event": "^13.5.0",
     "express": "^5.2.1",
     "express-fileupload": "^1.5.2",
+    "gh-pages": "^6.3.0",
     "jspdf": "^4.2.1",
     "pdf-parse": "^2.4.5",
     "prop-types": "^15.8.1",
@@ -27,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
